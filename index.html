@@ -174,6 +174,8 @@ renderer.setAnimationLoop(time=>{const dt=Math.min((time-prev)/1000,.05)||0,t=ti
  btns.forEach((b,i)=>{b.press=Math.max(0,b.press-dt*4);b.plate.material.color.set(b===hover?0x2b3d6e:0x141a30);b.g.scale.setScalar(1+.14*b.press+(b===hover?.06:0));b.g.position.z=Math.sin(t*1.5+i)*.01});
  if(rec||frame%3==0)renderRec();
  const st=xr?'VR ACTIVE · LASERS ONLINE':rec?'● RECORDING · '+(vertical?'9:16':'16:9'):'DESKTOP PREVIEW · '+(vertical?'9:16 VERTICAL':'16:9 WIDE');if(st!==lastSt){$('#status').textContent=st;lastSt=st}
+ // three r147's VR eye cameras only draw layers 0/1/2 and ignore main.layers, so the UI layer must be enabled on them or VR renders nothing
+ if(xr){const xc=renderer.xr.getCamera();xc.layers.enable(UI);xc.cameras.forEach(c=>c.layers.enable(UI))}
  renderer.render(scene,main)});
 </script>
 </body>
